@@ -1,18 +1,18 @@
 exports.sort = sortIt;
 
 
-//data from testCase
+//sample data from testCase
 var data = [ 
 	{ 
 		title 	: "Java How to Program",
 		author 	: "Deitel & Deitel",
 		year 	: 2007
 	},
-    {
+    	{
 		title 	: "Patterns of Enterprise Application Architecture",
 		author 	: "Martin Fowler",
 		year 	: 2002
-    },
+    	},
 	{
 		title 	: "Head First Design Patterns",
 		author 	: "Elisabeth Freeman",
@@ -29,7 +29,7 @@ var data = [
 function sortIt (queryArray, callback) {
 
 	data.sort(dynamicSortMultiple(queryArray));
-    if (callback) callback(data); 
+    	if (callback) callback(data); 
 }
 
 
@@ -63,7 +63,7 @@ function dynamicSortMultiple(configObj) {
 function dynamicSort(obj) { 
 
     //the overall directional behaviour carries on in here
-    //whenever the direction is asc, ascending order takes place,
+    //whenever the direction equals asc, ascending order takes place,
     //otherwise, any other value for the direction property, 
     //descending order is assumed
 
