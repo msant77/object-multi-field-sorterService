@@ -1,0 +1,94 @@
+The architecture of this solution is very simple, just like many node.js solutions and implementations are. 
+
+This document is divided in two sections: 
+
+1. Installation and Usage - all steps needed to run this solution and how to perform sorting operations with the service it provides. 
+
+2. Files and their work descriptions - All the files composing the solution with overall explanation on each one of their general purpose. 
+
+
+
+
+--- 1a. INSTALLATION 
+
+a. the first demand to run this solution is to have the proper node.js installation, the following link gives the installation for whatever Operational System the solution needs to run upon: http://nodejs.org/download/. The node.js version used for the development was the 0.10.28.
+
+b. create a directory with root/administrator permission in order to run the solution
+
+c. extract the sorterService.zip file into the created directory in the previous step
+
+d. open a Terminal or Command Prompt (with Administrator privileges) window and run the following command according to your operational system:  
+      
+       - Windows 			: npm install 		<PRESS ENTER>
+       - Mac OS or Linux 	: sudo npm install 	<PRESS ENTER>
+
+       The execution of this command is pretty much straightforward and needs no further explanation
+
+e. to run the solution, just type in the following command and press Enter: 
+
+		$ node sorterService.js 
+
+		The following message should appear and then the command prompt or terminal window should no longer be able to be typed in. 
+
+		   "
+			server on and being listened to on port 3000.
+			use "http://localhost:3000/?title=asc&author=desc" in order for sort the data
+
+ 			-- written by Marco Santana. Thanks for running this app
+ 		   "
+
+		As of this moment on, the service is running and waiting for being called from any http client such as a browser or even terminal commands such as curl or brew. 
+
+
+--- 1b. USAGE
+
+	As requested, the usage and testing of this service is very simple and easy to use. Once the service is running just open any http client such as the Google Chrome browser and type in the omni bar commands to receive stringified JSON sorted data:
+
+	a. http://localhost:3000 - if an address like this is sent, the response should be a stringified empty json object {}.
+
+	b. http://localhost:3000/?title=asc - this command will perform an ascending sorting upon the title field.
+
+	c. the fields can be enqueued in order to determine the order of priority on the sorting. Some examples are listed below:
+		I. http://localhost:3000/?year=1&author=0&title=asc - will perform a sorting with first an ascending edition year, then a descending author and finally with an ascending title.
+		II. http://localhost:3000/?year=0&title=asc - this will execute a sorting with a descending year and then an ascending title
+		III. http://localhost:3000/?title=foobar&foo=bar - this will perform a descending title sorting and the field foo, once it doesn't exist in the data sample, will be ignored by the service
+
+	d. the following fields can be used: 
+	 	I. title
+	 	II. author
+	 	III. year
+
+	e. the direction parameter sent can be: 
+	 	I. asc or 1 - will demand a sorting for the specified field on ascending order
+	 	II. desc, 0 or anything else -  will demand a sorting for the specified field on descending order
+
+
+
+------- 2. SOLUTION FILES
+
+	a. sorterService.js - main solution service, this is the node.js file startup for the solution and within it it's found the creation of the http server, the parsing of the url used to process the defininf order parameters and the sorter module that generates the sample data, receives the sorting query and returns with a callback function the sorted data.
+
+	b. config.js - this file contains the function that parses the query string object into an array with objects containing properties for sorting and their directions. It also keeps some testing functions to be used by app.js, that will be further explained
+
+	c. dataSorter.js - this file provides the books collection with sample data and the functions needed to perform the sorting, it has mainly three functions besides the books array ( var data ):
+
+		I. function sortIt - it calls the javascript ECMA-262 stardard 'sort' function. This function sorts arrays in place, allowing a callback function that defines the sort order. It receives the array of properties and directions and a callback function to be called upon the execution termination. It is exposed outside the module by the exporter 'sort'. It passes the function 'dynamicSortMultiple' to 'sort', explained in the next topic.
+
+		II. function dynamicSortMultiple - it returns a defining sorting function that attends the ECMA-262 standard 'sort' function described above. It keeps running while there are query properties and directions to process and the result of the next explained function named 'dynamicSort' is other than zero. This function was adapted from Ege Özcan's answer at this stackoverflow.com thread: http://stackoverflow.com/questions/11379361/how-to-sort-an-array-of-objects-with-multiple-field-values-in-javascript.
+
+		III. function dynamicSort - Receives and returns the directional result for the sorting of that particular field.
+
+	d. app.js - this file has been provided so that the dataSorter.js module can be tested with total independence of the service and the http client. It requires manipulation of config.js.propertiesAndDirectionsSampleGenerator() query return in order to change sorting behaviour. It can be used in the command prompt or terminal window just like the sorterService.js: 
+
+	    $ node app.js
+
+	    It will promptly respond the stringified JSON and terminate the program execution
+
+	e. package.json - overall information used for npm install (step 1a.d) to download the needed files for program execution
+
+
+
+by Marco Santana (9.6.2014)
+- thanks for taking the time to read this file and analyze this humble program 
+
+
