@@ -11,8 +11,6 @@ http.createServer(function (req, res) {
 
 	var propertiesAndDirectionsArray = config.parseQueryToArray(queryObject);
 
-	var obj; 
-
 	if (propertiesAndDirectionsArray.length == 0) {
 		writeResponse(res, {})
 	} else {
